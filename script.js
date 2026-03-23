@@ -36,3 +36,41 @@ const observer = new IntersectionObserver(
 );
 
 sections.forEach((section) => observer.observe(section));
+
+const introduction = document.querySelector(".introduction");
+const introCopy = document.querySelector(".intro-copy");
+
+if (introduction && introCopy) {
+  const setIntroShift = (clientY) => {
+    const rect = introduction.getBoundingClientRect();
+    const relativeY = (clientY - rect.top) / rect.height;
+    const clampedY = Math.max(0, Math.min(1, relativeY));
+    const shift = (clampedY - 0.5) * 18;
+    introCopy.style.setProperty("--intro-shift", `${shift}px`);
+  };
+
+  const resetIntroShift = () => {
+    introCopy.style.setProperty("--intro-shift", "0px");
+  };
+
+  introduction.addEventListener("pointermove", (event) => {
+    setIntroShift(event.clientY);
+  });
+
+  introduction.addEventListener("pointerleave", resetIntroShift);
+
+  introduction.addEventListener(
+    "touchmove",
+    (event) => {
+      const touch = event.touches[0];
+      if (!touch) {
+        return;
+      }
+
+      setIntroShift(touch.clientY);
+    },
+    { passive: true }
+  );
+
+  introduction.addEventListener("touchend", resetIntroShift, { passive: true });
+}

@@ -119,6 +119,9 @@ ul {
 
 .intro-copy {
   padding-top: 8px;
+  transform: translate3d(0, var(--intro-shift, 0px), 0);
+  transition: transform 220ms ease-out;
+  will-change: transform;
 }
 
 .eyebrow {
